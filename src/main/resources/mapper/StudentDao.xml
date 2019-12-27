@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.demo.mapper.StudentDao">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.model.Student">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="desc" property="desc"/>
+    </resultMap>
+
+    <select id="getStudentInfoById" resultMap="BaseResultMap" parameterType="int">
+        select id, name, age, `desc` from stu where id = #{id}
+    </select>
+    
+    <resultMap id="StudentListResultMap" type="com.example.demo.model.Student">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="desc" property="desc"/>
+    </resultMap>
+    
+    <select id="getStudentList" resultMap="StudentListResultMap" >
+        select id, name, age, `desc` from stu
+    </select>
+
+    <delete id="delStudentById" parameterType="int">
+        delete from stu where id=#{id}
+    </delete>
+
+    <insert id="addStudent">
+        insert into stu (name, age, `desc`) values (#{name}, #{age}, #{desc})
+    </insert>
+
+    <select id="getMaxId" resultType="int">
+        select  last_insert_id();
+    </select>
+
+    <select id="updateStudentById">
+        update stu set name = #{name}, age = #{age}, `desc`=#{desc} where id  = #{id}
+    </select>
+
+    <select id="search" resultMap="BaseResultMap">
+         select id, name, age, `desc` from stu where 1=1
+
+         <if test="name != null and name!=''" >
+            and name=#{name}
+         </if>
+        <if test="age != null and age!=''">
+            and age=#{age}
+        </if>
+        <if test="desc != null and desc != ''">
+            and `desc`=#{desc}
+        </if>
+
+    </select>
+</mapper>
